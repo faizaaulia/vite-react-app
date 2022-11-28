@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 const user = {
     name: 'Faiz',
     address: 'Malang',
-    isLogin: false
+    isLogin: true
 }
 
 const AuthContext = React.createContext(user);
