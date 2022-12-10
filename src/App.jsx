@@ -4,6 +4,7 @@ import Login from './pages/login'
 import { RequiredAuth } from './contexts/AuthContext'
 import Quiz from './pages/quiz'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import Register from './pages/register'
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ function App() {
           </RequiredAuth>
         } />
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Register />} />
       </Routes>
     </QueryClientProvider>
   )
