@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/home'
 import Login from './pages/login'
-import { RequiredAuth } from './contexts/AuthContext'
+import AuthProvider from './contexts/AuthContext'
 import Quiz from './pages/quiz'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Register from './pages/register'
@@ -12,14 +12,38 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/quiz' element={
-          <RequiredAuth>
-            <Quiz />
-          </RequiredAuth>
-        } />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Register />} />
+        <Route
+          path='/'
+          element={
+            <AuthProvider>
+              <Home />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path='/quiz'
+          element={
+            <AuthProvider>
+              <Quiz />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path='/login'
+          element={
+            <AuthProvider>
+              <Login />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <AuthProvider>
+              <Register />
+            </AuthProvider>
+          }
+        />
       </Routes>
     </QueryClientProvider>
   )

@@ -1,16 +1,26 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState } from 'react';
 
-const user = {
-    name: 'Faiz',
-    address: 'Malang',
-    isLogin: true
+const authUser = {
+  email: null,
+  id: null,
+  isLogin: false
 }
 
-const AuthContext = React.createContext(user);
+export const AuthContext = React.createContext(authUser);
 
-const RequiredAuth = ({children}) => {
-    return user.isLogin ? children : <Navigate to='/login' />
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(authUser);
+
+  const setAuthUser = (value) => {
+    setUser(value);
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, setAuthUser }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
-export { AuthContext, RequiredAuth }
+export default AuthProvider;
