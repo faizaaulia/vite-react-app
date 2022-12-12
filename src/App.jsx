@@ -5,6 +5,8 @@ import AuthProvider from './contexts/AuthContext'
 import Quiz from './pages/quiz'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Register from './pages/register'
+import History from './pages/quiz/history'
+import QuizDetail from './pages/quiz/detail'
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,22 @@ function App() {
           element={
             <AuthProvider>
               <Quiz />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path='/quiz/history'
+          element={
+            <AuthProvider>
+              <History />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path='/quiz/:id'
+          element={
+            <AuthProvider>
+              <QuizDetail />
             </AuthProvider>
           }
         />

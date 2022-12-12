@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import supabase from '../../configs/supabase'
+import { useNavigate } from "react-router-dom"
 
 const schema = Yup.object({
   email: Yup.string().email().required().label('Email'),
@@ -13,6 +14,7 @@ const schema = Yup.object({
 
 
 const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,7 +35,7 @@ const Register = () => {
     })
 
     if (data.user) {
-      window.location.replace('/login');
+      navigate('/login');
       alert('Berhasil mendaftar. Silakan login.');
     }
 

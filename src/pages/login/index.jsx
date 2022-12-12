@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import supabase from '../../configs/supabase'
 import { useContext } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Navigate, redirect } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 const schema = Yup.object({
   email: Yup.string().email().required().label('Email'),
@@ -42,7 +42,6 @@ const Login = () => {
         id: data.user.id,
         isLogin: true
       });
-      return redirect('/quiz')
     }
 
     if (error) {
@@ -52,7 +51,7 @@ const Login = () => {
 
   if (authContext.user.isLogin) {
     return (
-      <Navigate to='/quiz' />
+      <Navigate to='/' />
     )
   }
 

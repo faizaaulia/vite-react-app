@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -13,7 +13,7 @@ import supabase from "../../configs/supabase";
 
 const schema = yup.object({
   answer: yup.array().of(
-    yup.string().required('Harus diisi')
+    yup.string().required('Harus diisi').nullable()
   )
 });
 
@@ -29,11 +29,13 @@ const formatTime = (time) => {
 
 const Quiz = () => {
   const authContext = useContext(AuthContext);
-  const { data, isLoading } = useQuiz({ amount: 10, type: 'boolean' });
+  const questionCount = 10;
+  const { data, isLoading } = useQuiz({ amount: questionCount, type: 'boolean' });
   const questions = data?.data?.results;
 
-  const [countDown, setCountDown] = useState(10);
+  const [countDown, setCountDown] = useState(30);
   const timer = useRef();
+  const navigate = useNavigate();
   
   useEffect(() => {
     timer.current = setInterval(() => {
@@ -81,13 +83,13 @@ const Quiz = () => {
     }
 
     try {
-      // TODO: handle error & response sukses (belum sesuai)
       await supabase
         .from('quiz')
         .insert(insertData)
         .single()
 
       alert('Sukses');
+      navigate('/quiz/history');
     } catch (error) {
       alert(`Gagal. ${error}`);
     }
@@ -104,13 +106,15 @@ const Quiz = () => {
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues: {
-      answer: Array.apply(null, {length: 10}).map(() => '')
+      answer: Array.apply(null, {length: questionCount}).map(() => '')
     }
   });
 
   const onSubmit = (data) => {
-    clearInterval(timer.current);
-    handlePostAnswer(data.answer)
+    if (confirm('Submit Quiz?')) {
+      clearInterval(timer.current);
+      handlePostAnswer(data.answer);
+    }
   }
 
   if (!authContext.user.isLogin) {
@@ -161,7 +165,7 @@ const Quiz = () => {
                 >
                   Submit
                 </button>
-                <p class="text-2xl font-semibold">Sisa waktu {formatTime(countDown)}</p>
+                <p className="text-2xl font-semibold">Sisa waktu {formatTime(countDown)}</p>
               </div>
             </form>
           )
